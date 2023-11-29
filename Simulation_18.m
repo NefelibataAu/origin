@@ -20,18 +20,11 @@ K = length(phi);          % 信号源数目
 %%% 仿真参数
 SNR1 = 20;              % 信噪比(dB)
 SNR2 = 40;
+SNRs = [SNR1, SNR2];
 N = 100;                % 采样点数
 
 %% 阵列接收信号仿真模拟
-A = exp(-1j*k*z*sin(phi1'));        % 流型矩阵
-S = randn(length(phi1), N);         % 输入信号
-X1 = A*S;                           % 阵列接收信号
-X1 = awgn(X1, SNR1, 'measured');    % 加载高斯白噪声
-A = exp(-1j*k*z*sin(phi2'));        % 流型矩阵
-S = randn(length(phi2), N);         % 输入信号
-X2 = A*S;                           % 阵列接收信号
-X2 = awgn(X2, SNR2, 'measured');    % 加载高斯白噪声
-X = X1 + X2;
+[X] = Signal_Generator(k, z, phi, SNRs, N);
 
 %% 采用RLS求最优权值
 

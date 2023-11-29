@@ -18,41 +18,35 @@ Noi = length(soi);         % 干扰源数目
 phi = [sos; soi];
 K = Nos + Noi;
 %%% 仿真参数
-SNRs = 0;             % 信噪比(dB)
+SNRs = 10;             % 信噪比(dB)
 SNRi = 40;
-N = 500;             % 采样点数
+SNR = [SNRs, SNRi, SNRi];
+N = 1000;               % 采样点数
 
 %% 估计相关矩阵与权向量
 %%% 接收情况
-Aos = exp(-1j*k*z*sin(sos'));       % 流型矩阵
-S = randn(Nos, N);                  % 输入信号
-X = Aos*S;                          % 阵列接收信号
-X1 = awgn(X, SNRs, 'measured');     % 加载高斯白噪声
-
-Aoi = exp(-1j*k*z*sin(soi'));       % 流型矩阵
-S = randn(Noi, N);                  % 输入信号
-X = Aoi*S;                          % 阵列接收信号
-X2 = awgn(X, SNRi, 'measured');     % 加载高斯白噪声
-
-X = X1 + X2;
+[X] = Signal_Generator(k, z, phi, SNR, N);
 
 %%% R与w估计
-R = X*X'/N;  
+R = X*ctranspose(X)/N;  
+Aos = exp( -1j*k*z*sin(sos) );
 omega = R^(-1)*Aos/(ctranspose(Aos)*R^(-1)*Aos);
 
 %% 计算归一化波束图
 D = 500;
 seita = linspace(-90, 90, D);
-F =abs( ctranspose(omega) *  exp(-1j*k*z*sind(seita)) );
-f = 20*log10( F/(max (F) ) );
+F = abs( ctranspose(omega) *  exp(-1j*k*z*sind(seita)) );
+f = 10*log10( F/(max (F) ) );
 
 %%% 绘图
 figure;
+axis([-100 100 -50 0]);
 plot(seita, f);
 xlabel('空间角度/(°)');
 ylabel('归一化方向图/dB');
 grid on;
 hold on;
+
 
 
 
