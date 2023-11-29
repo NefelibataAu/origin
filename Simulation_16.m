@@ -35,7 +35,7 @@ X2 = awgn(X2, SNR2, 'measured');    % 加载高斯白噪声
 X = X1 + X2;
 
 %% 不同算法的DOA估计
-[P_MUSIC_dB, phi_MUSIC_e] = MUSIC_F(k, K, d, X);
+[P_MUSIC_dB] = MUSIC_F(k, K, d, X);
 [phi_RootMUSIC_e] = RootMUSIC_F(k, K, d, X);
 [phi_ESPRIT_e] = ESPRIT_F(k, K, d, X);
 [P_MVDR_dB, phi_MVDR_e] = MVDR_F(k, K, d, X);
