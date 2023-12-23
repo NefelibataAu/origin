@@ -11,7 +11,7 @@ M = 16;                 % 阵元数量
 d = 0.5*lambda;         % 阵元间隔 
 z = (0:d:(M-1)*d)';     % 阵元坐标分布
 P = 2;
-L = M + P - 1 ;
+L = M - P + 1 ;
 %%% 信号源参数
 phi1 = [-10]'*pi/180;       % 信号源来波
 phi2 = [40]'* pi/180;
@@ -34,7 +34,18 @@ X2 = awgn(X2, SNR2, 'measured');    % 加载高斯白噪声
 X = X1 + X2;
 
 %% DOA估计
-[P_MUSIC_dB,phi_e] = MUSIC_F1(k, K, d, X, P, L);
+D = 500;
+
+[P_MUSIC_dB] = MUSIC_F(k, K, d, X, D);
+[P_MUSICs_dB] = MUSIC_F1(k, K, d, X, P, L, D);
+draw_dB([P_MUSICs_dB]');
+
+[P_MVDR_dB] = MVDR_doa2(k, d, phi, X, P, L, D);
+
+[P_SAPES_dB] = F_SAPES_doa(k, d, X, P, L, D);
+draw_dB(P_SAPES_dB);
+
+
 
 
 

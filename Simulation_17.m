@@ -26,22 +26,7 @@ SNRi2 = 20;
 N = 100;              % 采样点数
 
 %% 接收模拟
-Aos = exp(-1j*k*z*sin(sos'));       % 流型矩阵
-S = randn(Nos, N);                  % 输入信号
-X = Aos*S;                          % 阵列接收信号
-X1 = awgn(X, SNRs, 'measured');     % 加载高斯白噪声
-
-Aoi1 = exp(-1j*k*z*sin(soi(1)'));    % 流型矩阵
-S = randn(1, N);                     % 输入信号
-X = Aoi1*S;                          % 阵列接收信号
-X2 = awgn(X, SNRi1, 'measured');     % 加载高斯白噪声
-
-Aoi2 = exp(-1j*k*z*sin(soi(2)'));    % 流型矩阵
-S = randn(1, N);                     % 输入信号
-X = Aoi2*S;                          % 阵列接收信号
-X3 = awgn(X, SNRi2, 'measured');     % 加载高斯白噪声
-
-X = X1 + X2 + X3;
+[X] = Signal_Generator(k, z, phi, [SNRs, SNRi1, SNRi2], N);
 
 P_MVDR_dB = MVDR_F1(k, d, sos, X);
 P_SAPES_dB = F_SAPES_F1(k, d, X, P, L, sos);
