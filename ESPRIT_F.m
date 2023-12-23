@@ -37,7 +37,7 @@ for i = 1:num
 end
 phi_e = seita/num;  
 disp('ESPRIT算法信号源估计方向为：');
-disp(phi_e');
+disp(phi_e);
 
 end
 

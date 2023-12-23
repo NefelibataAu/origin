@@ -10,7 +10,7 @@ z = (0:d:(M-1)*d)';
 
 %% R与w估计
 Aos = exp(-1j*k*z*sin(phi'));
-R = X*conj(X')/N;  
+R = X*ctranspose(X)/N;  
 omega = R^(-1)*Aos/(ctranspose(Aos)*R^(-1)*Aos);
 
 %% 计算归一化波束图

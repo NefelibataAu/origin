@@ -11,22 +11,21 @@ function [P_SAPES_dB] = F_SAPES_F1(k, d, X, P, L, phi)
 [M, N] = size(X);
 
 %% 计算相关矩阵与平滑矩阵
- R = X*conj(X')/N;  
+ R = X*ctranspose(X)/N;   
  R_f = zeros(size(L,L));
  for i = 1 : P
-     X_temp = X(i:i+L-1, i:i+L-1);
-     R_f = X_temp'*X_temp + R_f;
+     R_f = R(i:i+L-1,i:i+L-1) + R_f;
  end
- R_f = R_f./P;
+ R_f = R_f./P; 
  
  %% 计算干扰相关矩阵
  z_p = ( 0:d:(P-1)*d )';
- a_p = ( exp(1j*k*z_p*sin(phi')) )';
+ a_p = ( exp(-1j*k*z_p*sin(phi')) )';
  T = zeros(M-P+1, M);
  for i = 1 : (M-P+1)
      T(i,:) = [zeros(1,i-1), a_p, zeros(1, M-P-i+1)];
  end
- G_f = T * R * transpose(conj(T))/(P^(2));
+ G_f = T * R * ctranspose(T)/(P^(2));
  Q_f = R_f - G_f;
  
  %% 计算最优权向量
@@ -38,7 +37,7 @@ function [P_SAPES_dB] = F_SAPES_F1(k, d, X, P, L, phi)
 D = 500;
 seita = linspace(-90, 90, D);
 F = abs( ctranspose(omega) *  exp(-1j*k*z_L*sind(seita)) );
-P_SAPES_dB = 10*log10( F/(max (F) ) );
+P_SAPES_dB = 20*log10( F/(max (F) ) );
 
 %%% 绘图
 figure;

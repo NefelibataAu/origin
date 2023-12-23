@@ -32,7 +32,7 @@ phi = phi(1:K);
 phi_e = -angle(phi)*180/(pi*k*d);
 
 disp('Root_MUSIC算法信号源估计方向为：');
-disp(phi_e);
+disp(phi_e');
 
 
 end
